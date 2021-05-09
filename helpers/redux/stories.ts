@@ -1,15 +1,18 @@
 import { Scene } from "@helpers/stories/types/scene"
-import { Timeline } from "@helpers/stories/types/timeline"
+import { Event } from "@helpers/stories/types/event"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { Trame } from "@helpers/stories/types/trame"
 
 interface StoriesState {
   scenes: ReadonlyArray<Scene>
-  timelines: ReadonlyArray<Timeline>
+  events: ReadonlyArray<Event>
+  trames: ReadonlyArray<Trame>
 }
 
 const initialStories: StoriesState = {
   scenes: [],
-  timelines: [],
+  events: [],
+  trames: [],
 }
 
 const storiesSlice = createSlice({

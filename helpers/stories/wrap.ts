@@ -1,14 +1,15 @@
 import { importStories } from "./utils/import-stories"
 import { loadStory } from "./utils/load-story"
 import { chunk } from "lodash"
-import { Stories } from "./types"
 import { RScene, Scene } from "./types/scene"
-import { RTimeline, Timeline } from "./types/timeline"
+import { REvent, Event } from "./types/event"
 import { verifyIds } from "./utils/verify-ids"
+import { RTrame, Trame } from "./types/trame"
 
 interface WrapStoriesReturnType {
   scenes: ReadonlyArray<Scene>
-  timelines: ReadonlyArray<Timeline>
+  events: ReadonlyArray<Event>
+  trames: ReadonlyArray<Trame>
 }
 
 export const wrapStories = async (): Promise<WrapStoriesReturnType> => {
@@ -23,13 +24,16 @@ export const wrapStories = async (): Promise<WrapStoriesReturnType> => {
   }
 
   const scenes = loadedStories.filter(RScene.is)
-  const timelines = loadedStories.filter(RTimeline.is)
+  const events = loadedStories.filter(REvent.is)
+  const trames = loadedStories.filter(RTrame.is)
 
   verifyIds(scenes)
-  verifyIds(timelines)
+  verifyIds(events)
+  verifyIds(trames)
 
   return {
     scenes,
-    timelines,
+    events,
+    trames,
   }
 }

@@ -1,0 +1,5 @@
+kind: scene
+id: go-to-drink
+title: Go to drink
+trames:
+  - donatien

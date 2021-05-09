@@ -1,5 +1,5 @@
 export enum STORY_KINDS {
   SCENE = "scene",
-  TIMELINE = "timeline",
+  TRAME = "trame",
   EVENT = "event",
 }

@@ -3,9 +3,9 @@ import * as t from "io-ts"
 
 import { STORY_KINDS } from "./kinds"
 
-export const RTimeline = t.type({
-  kind: createEnum(STORY_KINDS.TIMELINE),
+export const REvent = t.type({
+  kind: createEnum(STORY_KINDS.EVENT),
   id: t.string,
 })
 
-export type Timeline = t.TypeOf<typeof RTimeline>
+export type Event = t.TypeOf<typeof REvent>

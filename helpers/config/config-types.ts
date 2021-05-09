@@ -2,6 +2,7 @@ import * as t from "io-ts"
 
 const ROptionalConfig = t.partial({
   description: t.string,
+  picture: t.string,
 })
 
 const RRequiredConfig = t.type({

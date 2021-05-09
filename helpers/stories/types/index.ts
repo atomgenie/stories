@@ -1,7 +1,9 @@
 import { RScene } from "./scene"
-import { RTimeline } from "./timeline"
-import * as t from "io-ts"
+import { REvent } from "./event"
 
-export const RStories = t.union([RScene, RTimeline])
+import * as t from "io-ts"
+import { RTrame } from "./trame"
+
+export const RStories = t.union([RScene, REvent, RTrame])
 
 export type Stories = t.TypeOf<typeof RStories>
