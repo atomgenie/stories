@@ -10,7 +10,9 @@ export const Home: React.FC = () => {
     <div className="app-container flex-grow flex flex-col bg-gray-900 text-white">
       <Header />
       {config.picture ? (
-        <img src={config.picture} className="w-full object-cover max-h-40" />
+        <div className="container mx-auto px-4 pt-4">
+          <img src={config.picture} className="w-full object-cover max-h-40 rounded-lg" />
+        </div>
       ) : null}
       <div className="container mx-auto">
         {config.description ? <Description description={config.description} /> : null}

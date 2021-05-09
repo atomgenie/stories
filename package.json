@@ -15,6 +15,7 @@
     "@types/lodash": "^4.14.168",
     "autoprefixer": "^10.2.5",
     "classnames": "^2.3.1",
+    "dayjs": "^1.10.4",
     "fp-ts": "^2.10.5",
     "fuse.js": "^6.4.6",
     "glob": "^7.1.7",

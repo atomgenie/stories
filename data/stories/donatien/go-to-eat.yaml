@@ -1,6 +1,7 @@
 kind: scene
 id: go-to-eat
 title: Go to eat
+date: 12/02/2021 12:30
 trames:
   - donatien
 description: |+

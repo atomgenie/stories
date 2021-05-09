@@ -1,13 +1,14 @@
 import { useAppSelector } from "@helpers/redux/hooks"
-import { Scene } from "@helpers/stories/types/scene"
+import { encodeScene, EScene, Scene } from "@helpers/stories/types/scene"
 import { Trame as TrameType } from "@helpers/stories/types/trame"
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Header } from "./Header"
 import { Loading } from "./Loading"
 import Fuse from "fuse.js"
 import { InputSearch } from "./InputSearch"
 import Link from "next/link"
 import { renderMultilineString } from "@helpers/utils/render-multiline-string"
+import { groupBy, isArray, keyBy } from "lodash"
 
 interface TrameProps {
   trameId: string
@@ -31,17 +32,33 @@ export const Trame: React.FC<TrameProps> = props => {
     trames,
   ])
 
-  const fuzy = useMemo(() => new Fuse(scenesForTrame, { keys: ["title"] }), [
-    scenesForTrame,
+  const encodedScenes = useMemo(
+    () =>
+      scenesForTrame
+        .map(scene => encodeScene(scene))
+        .sort((sceneA, sceneB) => sceneA.date.unix() - sceneB.date.unix()),
+    [scenesForTrame],
+  )
+
+  const fuzy = useMemo(() => new Fuse(encodedScenes, { keys: ["title"] }), [
+    encodedScenes,
   ])
 
   const scenesForTrameWithSearch = useMemo(() => {
     if (!search) {
-      return scenesForTrame
+      return encodedScenes
     }
 
     return fuzy.search(search).map(item => item.item)
-  }, [scenesForTrame, fuzy, search])
+  }, [encodedScenes, fuzy, search])
+
+  const scenePerDay = useMemo(() => {
+    if (search) {
+      return scenesForTrameWithSearch
+    }
+
+    return groupBy(scenesForTrameWithSearch, scene => scene.date.format("DD/MM/YYYY"))
+  }, [scenesForTrameWithSearch])
 
   if (!trame) {
     return <Loading />
@@ -78,18 +95,22 @@ export const Trame: React.FC<TrameProps> = props => {
             className="mt-4 w-full"
           />
           <div className="mt-4">
-            {scenesForTrameWithSearch.map(scene => (
-              <Link href={`/scene/${scene.id}`} key={scene.id}>
-                <button className="mt-2 bg-gray-800 rounded-lg px-4 py-2 flex flex-col w-full overflow-hidden">
-                  <div>{scene.title}</div>
-                  {scene.description ? (
-                    <div className="text-sm text-gray-400 truncate max-w-full max-h-7">
-                      {scene.description}
+            {isArray(scenePerDay)
+              ? scenePerDay.map(scene => (
+                  <React.Fragment key={scene.id}>{renderSceneCard(scene)}</React.Fragment>
+                ))
+              : Object.entries(scenePerDay).map(([sceneDay, scenesForDay]) => (
+                  <div key={sceneDay} className="mt-4">
+                    <div className="text-xs text-gray-400">{sceneDay}</div>
+                    <div>
+                      {scenesForDay.map(scene => (
+                        <React.Fragment key={scene.id}>
+                          {renderSceneCard(scene)}
+                        </React.Fragment>
+                      ))}
                     </div>
-                  ) : null}
-                </button>
-              </Link>
-            ))}
+                  </div>
+                ))}
           </div>
         </div>
         {trame.story ? (
@@ -110,4 +131,19 @@ const getSceneFromTrame = (
   trame: TrameType,
 ): ReadonlyArray<Scene> => {
   return scenes.filter(scene => scene.trames.some(sceneTrame => sceneTrame === trame.id))
+}
+
+const renderSceneCard = (scene: EScene) => {
+  return (
+    <Link href={`/scene/${scene.id}`} key={scene.id}>
+      <button className="mt-2 bg-gray-800 rounded-lg px-4 py-2 flex flex-col w-full overflow-hidden">
+        <div>{scene.title}</div>
+        {scene.description ? (
+          <div className="text-sm text-gray-400 truncate max-w-full max-h-7">
+            {scene.description}
+          </div>
+        ) : null}
+      </button>
+    </Link>
+  )
 }

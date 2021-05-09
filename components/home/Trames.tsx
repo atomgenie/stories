@@ -8,7 +8,7 @@ export const Trames: React.FC = () => {
   const trames = useAppSelector(state => state.stories.trames)
   const [search, setSearch] = useState("")
   const fuse = useMemo(() => {
-    return new Fuse(trames, { keys: ["title"] })
+    return new Fuse(trames, { keys: ["title", "keywords"] })
   }, [trames])
 
   const tramesWithSearch = useMemo(() => {

@@ -8,6 +8,7 @@ const RTrameOptional = t.partial({
   picture: t.string,
   fullname: t.string,
   story: t.string,
+  keywords: t.array(t.string),
 })
 
 export const RTrame = t.intersection([
