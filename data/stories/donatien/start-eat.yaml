@@ -1,0 +1,5 @@
+kind: event
+id: eat-start-eat
+title: Start eat
+date: 12/02/2021 12:30
+scene: go-to-eat

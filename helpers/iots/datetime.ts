@@ -4,7 +4,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat"
 dayjs.extend(customParseFormat)
 
 // DD/MM/YYYY hh:mm
-type Datetime = `${number}/${number}/${number} ${number}:${number}`
+type Datetime = string
 
 const validDatetime = /^[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+$/
 

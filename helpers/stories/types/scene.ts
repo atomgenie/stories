@@ -6,6 +6,7 @@ import { STORY_KINDS } from "./kinds"
 
 const RScenePartial = t.partial({
   description: t.string,
+  picture: t.string,
 })
 
 export const RScene = t.intersection([

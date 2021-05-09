@@ -137,7 +137,7 @@ const renderSceneCard = (scene: EScene) => {
   return (
     <Link href={`/scene/${scene.id}`} key={scene.id}>
       <button className="mt-2 bg-gray-800 rounded-lg px-4 py-2 flex flex-col w-full overflow-hidden">
-        <div>{scene.title}</div>
+        <div className="truncate max-w-full">{scene.title}</div>
         {scene.description ? (
           <div className="text-sm text-gray-400 truncate max-w-full max-h-7">
             {scene.description}
