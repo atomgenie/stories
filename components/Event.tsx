@@ -110,19 +110,19 @@ export const Event: React.FC<EventProps> = props => {
             height="200"
             className="w-full rounded-lg"
           />
-          <button
-            className="flex items-start mt-4 w-full"
-            onClick={() => {
-              selectedTrame && push(`/trame/${selectedTrame.id}`)
-            }}
-          >
+          <div className="flex items-start mt-4 w-full">
             {selectedTrame?.picture ? (
-              <div className="flex-shrink-0 rounded-full p-1 bg-gray-800 mr-4">
+              <button
+                className="flex-shrink-0 rounded-full p-1 bg-gray-800 mr-4"
+                onClick={() => {
+                  selectedTrame && push(`/trame/${selectedTrame.id}`)
+                }}
+              >
                 <img
                   src={selectedTrame.picture}
                   className="object-cover h-14 w-14 overflow-hidden rounded-full"
                 />
-              </div>
+              </button>
             ) : (
               <div className="flex-shrink-0 rounded-full p-1 bg-gray-800 mr-4">
                 <div className="h-14 w-14 overflow-hidden rounded-full text-2xl flex items-center justify-center">
@@ -133,7 +133,7 @@ export const Event: React.FC<EventProps> = props => {
             <div className="py-2 font-bold text-sm text-gray-300 min-h-14">
               {authorName}
             </div>
-          </button>
+          </div>
         </div>
       ) : null}
       <div className="container mx-auto px-4 my-6">

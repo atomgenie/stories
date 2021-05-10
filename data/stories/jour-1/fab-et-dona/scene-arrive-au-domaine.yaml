@@ -1,0 +1,9 @@
+kind: scene
+id: jour-1_fab-et-dona_arrive-au-domaine
+title: Arrivée au domaine
+date: 21/04/2021 10:00
+description: |+
+  Donatien de Montazac retrouve son associé Fabien Torez à l'aéroport pour se lancer dans son activité viticole. Ils croisent alors Guy Monier, concurrent vendant également du vin. Donatien et Fab tombent sur deux jeunes, les cousins Croûte, ainsi que Henriette, une vieille femme. Ils récupèrent les contacts (il trouve un moyen mémotechnique pour son numéro de téléphone et cela devient le "running gag" ) et commencent déjà à faire des affaires. Donatien tombe sur un membre du gang des Vagos Locos qui cherche à lui vendre de la drogue. Donatien refuse et énerve le Vagos. Il lui demande d'un air menaçant l'emplacement du domaine. Donatien donne une fausse position et s'extirpe de la situation.
+trames:
+  - fab
+  - dona

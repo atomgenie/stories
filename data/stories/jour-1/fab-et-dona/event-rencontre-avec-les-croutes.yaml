@@ -1,0 +1,10 @@
+kind: event
+id: fab-et-dona_rencontre-croute
+title: Rencontre avec les Croûtes
+date: 21/04/2021 11:30
+scene: jour-1_fab-et-dona_arrive-au-domaine
+povs:
+  - trame: dona
+    link: https://www.youtube.com/embed/atdQeh6NLZQ?start=1806
+  - trame: fab
+    link: https://player.twitch.tv/?video=995643564&time=0h53m32s&parent=localhost&autoplay=false
