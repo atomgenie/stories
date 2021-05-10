@@ -123,7 +123,13 @@ export const Event: React.FC<EventProps> = props => {
                   className="object-cover h-14 w-14 overflow-hidden rounded-full"
                 />
               </div>
-            ) : null}
+            ) : (
+              <div className="flex-shrink-0 rounded-full p-1 bg-gray-800 mr-4">
+                <div className="h-14 w-14 overflow-hidden rounded-full text-2xl flex items-center justify-center">
+                  ?
+                </div>
+              </div>
+            )}
             <div className="py-2 font-bold text-sm text-gray-300 min-h-14">
               {authorName}
             </div>

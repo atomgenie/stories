@@ -62,7 +62,6 @@ export const PovList: React.FC<PovListProps> = props => {
             className="absolute top-0 left-0 w-full h-full bg-transparent"
             onClick={e => {
               onChange(index)
-              console.log("test")
             }}
           ></button>
           <div className="mt-2 text-sm text-gray-400">{authors[index]}</div>
