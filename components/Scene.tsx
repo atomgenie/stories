@@ -75,12 +75,14 @@ export const Scene: React.FC<SceneProps> = props => {
 
 const renderEvent = (event: EEvent) => {
   return (
-    <button className="bg-gray-800 rounded-lg px-4 py-3 mt-2 w-full text-left">
-      <div className="text-xs font-bold text-gray-400 leading-3">
-        {event.date.format("h:m - DD/MM/YYYY")}
-      </div>
-      <div className="leading-4 mt-1">{event.title}</div>
-    </button>
+    <Link href={`/event/${event.id}`}>
+      <button className="bg-gray-800 rounded-lg px-4 py-3 mt-2 w-full text-left">
+        <div className="text-xs font-bold text-gray-400 leading-3">
+          {event.date.format("h:m - DD/MM/YYYY")}
+        </div>
+        <div className="leading-4 mt-1">{event.title}</div>
+      </button>
+    </Link>
   )
 }
 

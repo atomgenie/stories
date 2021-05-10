@@ -3,3 +3,8 @@ id: eat-start-eat
 title: Start eat
 date: 12/02/2021 12:30
 scene: go-to-eat
+povs:
+  - trame: donatien
+    link: https://www.youtube.com/embed/WNbSUsy5xo0
+  - author: Croutes
+    link: https://www.youtube.com/embed/XFlirwhCdDI
