@@ -1,5 +1,6 @@
 import { useAppSelector } from "@helpers/redux/hooks"
 import { encodeEvent, REventPovWithTrame } from "@helpers/stories/types/event"
+import { getVideoLink } from "@helpers/utils/links"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -105,7 +106,7 @@ export const Event: React.FC<EventProps> = props => {
         <div className="container mx-auto px-4 mt-4">
           <iframe
             ref={iframeRef}
-            src={selectedVideo.link}
+            src={getVideoLink(selectedVideo)}
             width="1920"
             height="200"
             className="w-full rounded-lg"

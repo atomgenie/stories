@@ -1,6 +1,7 @@
 import { useAppSelector } from "@helpers/redux/hooks"
 import { EventPov, REventPovWithTrame } from "@helpers/stories/types/event"
 import { Trame } from "@helpers/stories/types/trame"
+import { getVideoLink } from "@helpers/utils/links"
 import { keyBy } from "lodash"
 import { useEffect, useMemo, useRef, useState } from "react"
 
@@ -48,12 +49,12 @@ export const PovList: React.FC<PovListProps> = props => {
     <div className="flex flex-wrap video-container" ref={divContainer}>
       {povs.map((pov, index) => (
         <div
-          key={pov.link}
+          key={getVideoLink(pov)}
           style={{ width: videoSize.width }}
           className="truncate flex flex-col relative mb-2"
         >
           <iframe
-            src={pov.link}
+            src={getVideoLink(pov)}
             height={videoSize.height}
             width={videoSize.width}
             className="rounded-lg"

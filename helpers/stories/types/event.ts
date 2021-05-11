@@ -4,15 +4,24 @@ import * as t from "io-ts"
 
 import { STORY_KINDS } from "./kinds"
 
-export const REventPovWithTrame = t.type({
-  trame: t.string,
-  link: t.string,
+const REventLinks = t.partial({
+  twitch: t.string,
+  youtube: t.string,
 })
 
-export const REventPovAnonym = t.type({
-  author: t.string,
-  link: t.string,
-})
+export const REventPovWithTrame = t.intersection([
+  t.type({
+    trame: t.string,
+  }),
+  REventLinks,
+])
+
+export const REventPovAnonym = t.intersection([
+  t.type({
+    author: t.string,
+  }),
+  REventLinks,
+])
 
 const REventPov = t.union([REventPovWithTrame, REventPovAnonym])
 

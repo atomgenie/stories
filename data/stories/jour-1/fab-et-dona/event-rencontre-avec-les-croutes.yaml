@@ -5,6 +5,10 @@ date: 21/04/2021 11:30
 scene: jour-1_fab-et-dona_arrive-au-domaine
 povs:
   - trame: dona
-    link: https://www.youtube.com/embed/atdQeh6NLZQ?start=1806
+    youtube: https://youtu.be/atdQeh6NLZQ?t=1808
   - trame: fab
-    link: https://player.twitch.tv/?video=995643564&time=0h53m32s&parent=localhost&autoplay=false
+    twitch: https://www.twitch.tv/videos/995643564?t=01h03m35s
+  - trame: fab
+    twitch: https://www.twitch.tv/videos/995643564?t=03h01m32s
+  - trame: dona
+    twitch: https://clips.twitch.tv/AthleticTemperedMageOneHand-ukyXMRXBs50hgVaC
