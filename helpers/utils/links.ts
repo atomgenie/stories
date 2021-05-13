@@ -1,27 +1,32 @@
 import { EventPov } from "@helpers/stories/types/event"
 
-const youtubeRegxp = /^https:\/\/youtu\.be\/([a-zA-Z0-9]+)(\?t=(\d+))?$/
+const youtubeClipRegxp = /^https:\/\/youtu\.be\/([a-zA-Z0-9]+)(\?t=(\d+))?$/
+const youtubeRegularRegxp = /^https:\/\/www\.youtube\.com\/watch\?v=(\w+)$/
 
 const getYoutubeLink = (link: string): string => {
-  const regexp = youtubeRegxp.exec(link)
+  const regexp = youtubeClipRegxp.exec(link)
 
-  if (!regexp) {
-    return link
+  if (regexp) {
+    let end = ""
+
+    if (regexp[3]) {
+      end = `?start=${regexp[3]}`
+    }
+
+    return `https://www.youtube.com/embed/${regexp[1]}${end}`
   }
 
-  let end = ""
+  const regularRegxp = youtubeRegularRegxp.exec(link)
 
-  if (regexp[3]) {
-    end = `?start=${regexp[3]}`
+  if (regularRegxp) {
+    return `https://www.youtube.com/embed/${regularRegxp[1]}`
   }
 
-  return `https://www.youtube.com/embed/${regexp[1]}${end}`
+  return link
 }
 
 const twitchRegxpVideo = /^https:\/\/www\.twitch\.tv\/videos\/(\d+)(\?t=(.+))?$/
 const twictRegxpClip = /^https:\/\/clips\.twitch\.tv\/([^-]+-[a-zA-Z0-9]+)$/
-// https://clips.twitch.tv/embed?clip=AthleticTemperedMageOneHand-ukyXMRXBs50hgVaC&parent=www.example.com
-// https://clips.twitch.tv/AthleticTemperedMageOneHand-ukyXMRXBs50hgVaC
 
 const getTwitchLink = (link: string): string => {
   const regxpVideo = twitchRegxpVideo.exec(link)
