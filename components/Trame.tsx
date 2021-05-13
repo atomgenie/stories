@@ -1,7 +1,7 @@
-import { useAppSelector } from "@helpers/redux/hooks"
+import { useAppDispatch, useAppSelector } from "@helpers/redux/hooks"
 import { encodeScene, EScene, Scene } from "@helpers/stories/types/scene"
 import { Trame as TrameType } from "@helpers/stories/types/trame"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Header } from "./Header"
 import { Loading } from "./Loading"
 import Fuse from "fuse.js"
@@ -9,6 +9,7 @@ import { InputSearch } from "./InputSearch"
 import Link from "next/link"
 import { renderMultilineString } from "@helpers/utils/render-multiline-string"
 import { groupBy, isArray, keyBy } from "lodash"
+import { preferencesActions } from "@helpers/redux/preferences"
 
 interface TrameProps {
   trameId: string
@@ -18,19 +19,20 @@ export const Trame: React.FC<TrameProps> = props => {
   const { trameId } = props
 
   const [search, setSearch] = useState("")
+  const dispatch = useAppDispatch()
 
   const trames = useAppSelector(state => state.stories.trames)
   const scenes = useAppSelector(state => state.stories.scenes)
 
-  const trame = useMemo(() => trames.find(trame => trame.id === trameId), [
-    trameId,
-    trames,
-  ])
+  const trame = useMemo(
+    () => trames.find(trame => trame.id === trameId),
+    [trameId, trames],
+  )
 
-  const scenesForTrame = useMemo(() => (trame ? getSceneFromTrame(scenes, trame) : []), [
-    scenes,
-    trames,
-  ])
+  const scenesForTrame = useMemo(
+    () => (trame ? getSceneFromTrame(scenes, trame) : []),
+    [scenes, trames],
+  )
 
   const encodedScenes = useMemo(
     () =>
@@ -40,9 +42,10 @@ export const Trame: React.FC<TrameProps> = props => {
     [scenesForTrame],
   )
 
-  const fuzy = useMemo(() => new Fuse(encodedScenes, { keys: ["title"] }), [
-    encodedScenes,
-  ])
+  const fuzy = useMemo(
+    () => new Fuse(encodedScenes, { keys: ["title"] }),
+    [encodedScenes],
+  )
 
   const scenesForTrameWithSearch = useMemo(() => {
     if (!search) {
@@ -59,6 +62,14 @@ export const Trame: React.FC<TrameProps> = props => {
 
     return groupBy(scenesForTrameWithSearch, scene => scene.date.format("DD/MM/YYYY"))
   }, [scenesForTrameWithSearch])
+
+  useEffect(() => {
+    if (!trame) {
+      return
+    }
+
+    dispatch(preferencesActions.setCurrentTrameId(trame.id))
+  }, [dispatch, trame])
 
   if (!trame) {
     return <Loading />

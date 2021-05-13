@@ -13,7 +13,7 @@ export const Header: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-800 text-white sticky top-0 border-b border-gray-900">
+    <div className="bg-gray-800 text-white sticky top-0 shadow-md z-30">
       <div className="container mx-auto h-14 flex items-center">
         <button onClick={handleBack} className="px-4 text-2xl bg-gray-700 h-full">
           <FiArrowLeft />

@@ -18,15 +18,15 @@ export const Scene: React.FC<SceneProps> = props => {
   const events = useAppSelector(state => state.stories.events)
   const trames = useAppSelector(state => state.stories.trames)
 
-  const scene = useMemo(() => scenes.find(scene => scene.id === sceneId), [
-    sceneId,
-    scenes,
-  ])
+  const scene = useMemo(
+    () => scenes.find(scene => scene.id === sceneId),
+    [sceneId, scenes],
+  )
 
-  const normalizedEvents = useMemo(() => normalizeEvents(events, sceneId), [
-    events,
-    sceneId,
-  ])
+  const normalizedEvents = useMemo(
+    () => normalizeEvents(events, sceneId),
+    [events, sceneId],
+  )
 
   const tramesInScene = useMemo(
     () => (scene ? normalizeTrames(scene.trames, trames) : []),
@@ -78,7 +78,7 @@ const renderEvent = (event: EEvent) => {
     <Link href={`/event/${event.id}`}>
       <button className="bg-gray-800 rounded-lg px-4 py-3 mt-2 w-full text-left">
         <div className="text-xs font-bold text-gray-400 leading-3">
-          {event.date.format("h:m - DD/MM/YYYY")}
+          {event.date.format("h:mm - DD/MM/YYYY")}
         </div>
         <div className="leading-4 mt-1">{event.title}</div>
       </button>
@@ -89,7 +89,7 @@ const renderEvent = (event: EEvent) => {
 const renderTrame = (trame: Trame) => {
   return (
     <Link href={`/trame/${trame.id}`}>
-      <button className=" h-48 w-36 rounded-lg mr-4 bg-gray-800 overflow-hidden flex flex-col flex-shrink-0">
+      <button className=" h-48 w-36 rounded-lg mr-4 bg-gray-800 overflow-hidden flex flex-col flex-shrink-0 shadow-md">
         {trame.picture ? (
           <img src={trame.picture} className="object-cover h-36 w-full" />
         ) : (

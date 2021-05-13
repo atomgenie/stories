@@ -1,9 +1,11 @@
 import { useAppSelector } from "@helpers/redux/hooks"
 import { encodeEvent, REventPovWithTrame } from "@helpers/stories/types/event"
+import { encodeScene } from "@helpers/stories/types/scene"
 import { getVideoLink } from "@helpers/utils/links"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { FiArrowRight } from "react-icons/fi"
 import { PovList } from "./Event/PovList"
 import { Header } from "./Header"
 import { Loading } from "./Loading"
@@ -25,10 +27,10 @@ export const Event: React.FC<EventProps> = props => {
   const trames = useAppSelector(state => state.stories.trames)
   const scenes = useAppSelector(state => state.stories.scenes)
 
-  const event = useMemo(() => events.find(event => event.id === eventId), [
-    eventId,
-    events,
-  ])
+  const event = useMemo(
+    () => events.find(event => event.id === eventId),
+    [eventId, events],
+  )
 
   const encodedEvent = useMemo(() => (event ? encodeEvent(event) : undefined), [event])
 
@@ -37,10 +39,10 @@ export const Event: React.FC<EventProps> = props => {
     [scenes, encodedEvent],
   )
 
-  const selectedVideo = useMemo(() => encodedEvent?.povs[selectedPovIndex], [
-    encodedEvent,
-    selectedPovIndex,
-  ])
+  const selectedVideo = useMemo(
+    () => encodedEvent?.povs[selectedPovIndex],
+    [encodedEvent, selectedPovIndex],
+  )
 
   useEffect(() => {
     setTimeout(() => {
@@ -76,6 +78,33 @@ export const Event: React.FC<EventProps> = props => {
     return selectedVideo.author
   }, [selectedTrame, selectedVideo])
 
+  const nextEvent = useMemo(() => {
+    if (!encodedEvent) {
+      return undefined
+    }
+
+    const sceneId = encodedEvent.scene
+    const allEventForScene = events
+      .filter(event => event.scene === sceneId)
+      .map(encodeEvent)
+      .filter(event => event.date.isAfter(encodedEvent.date))
+      .sort((eventA, eventB) => eventA.date.unix() - eventB.date.unix())
+
+    if (allEventForScene.length === 0) {
+      return undefined
+    }
+
+    let nextEvent = allEventForScene[0]
+    if (nextEvent.id === encodedEvent.id) {
+      if (allEventForScene.length === 1) {
+        return undefined
+      }
+      nextEvent = allEventForScene[1]
+    }
+
+    return nextEvent
+  }, [encodedEvent])
+
   if (!encodedEvent) {
     return <Loading />
   }
@@ -94,7 +123,7 @@ export const Event: React.FC<EventProps> = props => {
         {selectedScene ? (
           <Link href={`/scene/${selectedScene.id}`}>
             <button
-              className="bg-gray-800 rounded-lg px-4 py-2 truncate text-sm"
+              className="bg-gray-800 rounded-lg px-4 py-2 truncate text-sm shadow"
               style={{ maxWidth: 150 }}
             >
               {selectedScene.title}
@@ -137,6 +166,18 @@ export const Event: React.FC<EventProps> = props => {
           </div>
         </div>
       ) : null}
+      {nextEvent !== undefined ? (
+        <div className="container mx-auto px-4 flex justify-end">
+          <Link href={`/event/${nextEvent.id}`}>
+            <button className="bg-gray-800 rounded-lg px-4 py-2 shadow flex items-center">
+              <div className="mr-4 text-sm">Prochain event</div>
+              <FiArrowRight />
+            </button>
+          </Link>
+        </div>
+      ) : (
+        <NextScene sceneId={encodedEvent.scene} />
+      )}
       <div className="container mx-auto px-4 my-6">
         <PovList
           povs={encodedEvent.povs}
@@ -144,6 +185,62 @@ export const Event: React.FC<EventProps> = props => {
           onChange={setSelectedPovIndex}
         />
       </div>
+    </div>
+  )
+}
+
+interface NextSceneProps {
+  sceneId: string
+}
+
+const NextScene: React.FC<NextSceneProps> = ({ sceneId }) => {
+  const currentTrameId = useAppSelector(state => state.preferences.currentTrameId)
+  const scenes = useAppSelector(state => state.stories.scenes)
+  const currentScene = useMemo(() => scenes.find(scene => scene.id === sceneId), [])
+  const encodedCurrentScene = useMemo(
+    () => (!currentScene ? undefined : encodeScene(currentScene)),
+    [currentScene],
+  )
+
+  const nextScene = useMemo(() => {
+    if (!encodedCurrentScene) {
+      return undefined
+    }
+
+    const scenesForTrame = scenes
+      .filter(scene => scene.trames.some(trame => trame === currentTrameId))
+      .map(encodeScene)
+      .filter(scene => scene.date.isAfter(encodedCurrentScene.date))
+
+    if (scenesForTrame.length === 0) {
+      return undefined
+    }
+
+    let nextScene = scenesForTrame[0]
+
+    if (nextScene.id === encodedCurrentScene.id) {
+      if (scenesForTrame.length === 1) {
+        return undefined
+      }
+
+      nextScene = scenesForTrame[1]
+    }
+
+    return nextScene
+  }, [encodedCurrentScene, scenes, currentTrameId])
+
+  if (!nextScene) {
+    return null
+  }
+
+  return (
+    <div className="container mx-auto px-4 flex justify-end">
+      <Link href={`/scene/${nextScene.id}`}>
+        <button className="bg-gray-800 rounded-lg px-4 py-2 shadow flex items-center">
+          <div className="mr-4 text-sm">Prochaine scene</div>
+          <FiArrowRight />
+        </button>
+      </Link>
     </div>
   )
 }
